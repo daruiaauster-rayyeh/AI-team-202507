@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 # 🔑 從環境變數讀取金鑰
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzRhVzLo0MBu-yL9xKRnPsvwfqG8jujCp2edud_p96q5dWJ5CNDmzfcJDIhaZxpNGEu/exec"
+GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxriqjT0jcAZsqx20XVvWH_Sf8QV4vQwSueoh7M0gghT6HrSw6Aps2tFqbKTxWKn6o25Q/exec"
 
 # 配置 Gemini API
 genai.configure(api_key=GOOGLE_API_KEY)
