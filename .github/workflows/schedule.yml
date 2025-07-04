@@ -1,0 +1,32 @@
+name: 🕒 Daily Reinsurance News
+
+on:
+  schedule:
+    - cron: '0 1 * * *'       # UTC 01:00 → 台北 09:00
+  workflow_dispatch:         # 允許手動執行
+
+jobs:
+  run-news-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 抓取程式碼
+        uses: actions/checkout@v3
+
+      - name: 列出所有檔案（Debug）
+        run: ls -R .
+
+      - name: 設定 Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: 安裝依賴套件
+        run: |
+          pip install feedparser google-generativeai requests
+
+      - name: 執行 news_bot.py
+        run: python news_bot.py
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GAS_WEBHOOK_URL:  ${{ secrets.GAS_WEBHOOK_URL }}
