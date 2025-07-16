@@ -116,5 +116,5 @@ if __name__ == "__main__":
     else:
         print("📢 摘要內容：\n", body)
         today_str = datetime.now().strftime("%Y-%m-%d")
-        subject = f"AI Reinsurance News - {today_str}"
+        subject = f"AI Reinsurance News Daily Update - {today_str}"
         send_via_gas("rayyeh@centralre.com", subject, body)
