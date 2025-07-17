@@ -62,6 +62,7 @@ def fetch_and_summarize():
 
             # 呼叫 Gemini API 生成摘要與影響評估（加入忽略人事任命提示）
             prompt = (
+                "你是一個在再保險領域深耕多年的核保人員，擁有Swiss Re/Hannover Re/Munich Re工作經驗，"
                 "請將以下內容摘要成 3-5 句並以繁體中文輸出，"
                 "再分析對台灣保險業/再保險的影響（30 字以內）。"
                 "請忽略與人事任命相關的內容：\n\n" + entry.summary
