@@ -41,6 +41,7 @@ def fetch_and_summarize():
         "https://www.artemis.bm/feed/",
         "https://www.insurancebusinessmag.com/reinsurance/rss/", 
         "https://www.insurancebusinessmag.com/reinsurance/rss/"
+        
     ]
     parts = []
     yesterday = (datetime.now() - timedelta(days=1)).date()
