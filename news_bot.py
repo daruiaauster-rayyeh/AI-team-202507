@@ -2,16 +2,17 @@ import os
 import time
 import feedparser
 import requests
-import google.generativeai as genai
-from google.api_core.exceptions import ResourceExhausted
+from google import genai
+from google.genai import types
+from google.genai.errors import APIError
 from datetime import datetime, timedelta
 
 # 🔑 從環境變數讀取金鑰
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxriqjT0jcAZsqx20XVvWH_Sf8QV4vQwSueoh7M0gghT6HrSw6Aps2tFqbKTxWKn6o25Q/exec"
 
-# 配置 Gemini API
-genai.configure(api_key=GOOGLE_API_KEY)
+# 建立新 SDK 的 Client（會自動讀 GEMINI_API_KEY/GOOGLE_API_KEY）
+client = genai.Client(api_key=GOOGLE_API_KEY)
 
 # 定義要過濾的關鍵字列表（英文）
 FILTER_KEYWORDS = [
@@ -67,9 +68,20 @@ def fetch_and_summarize():
                 "請忽略與人事任命相關的內容：\n\n" + entry.summary
             )
             try:
-                resp = genai.GenerativeModel("gemini-1.5-flash-latest").generate_content(prompt)
-                text = resp.text or ""
-            except ResourceExhausted:
+                resp = client.models.generate_content(
+                   model="gemini-2.5-flash",
+                   contents=prompt,
+                   # 可選：統一回傳格式、控制輸出長度等
+                    config=types.GenerateContentConfig(
+                        max_output_tokens=512
+                    ),
+                )
+               text = (resp.text or "").strip()
+           except APIError as e:
+                # 針對配額/暫時性錯誤做簡單退避重試（示意）
+              if getattr(e, "code", None) in (429, 500, 503):
+                   time.sleep(2)  # 可改成指數退避
+                 continue
                 print("❌ API 配額已用盡，停止摘要生成。")
                 break
             except Exception as e:
