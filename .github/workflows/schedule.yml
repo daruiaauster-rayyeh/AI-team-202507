@@ -23,7 +23,8 @@ jobs:
 
       - name: 安裝依賴套件
         run: |
-          pip install feedparser google-generativeai requests
+          pip uninstall -y google-generativeai google || true
+          pip install -U google-genai feedparser requests
 
       - name: 執行 news_bot.py
         run: python news_bot.py
