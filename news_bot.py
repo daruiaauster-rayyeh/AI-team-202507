@@ -76,7 +76,7 @@ def fetch_and_summarize():
                         max_output_tokens=512
                     ),
                 )
-               text = (resp.text or "").strip()
+                text = (resp.text or "").strip()
            except APIError as e:
                 # 針對配額/暫時性錯誤做簡單退避重試（示意）
               if getattr(e, "code", None) in (429, 500, 503):
